@@ -1,0 +1,18 @@
+{% load staticfiles %}
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="{% url 'website:homepage' %}">
+    <img id="logo" src="{% static 'website/images/logo.jpg' %}" alt="Logo" style="width:40px;">
+  </a>
+
+  <!-- Brand -->
+  <a class="navbar-brand" href="{% url 'website:homepage' %}">
+    <b>T & M <text class="color-primary">USA</text></b><br />
+    Application Name
+  </a>
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+  </ul>
+</nav>

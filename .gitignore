@@ -1,0 +1,28 @@
+# Vagrant Settings
+.vagrant
+*.log
+
+# Database
+/data
+
+# Django Data 
+/static
+/media
+/secrets.json
+
+# OS Related
+.DS_Store
+
+# Python Files
+__pycache__/
+*.py[cod]
+
+# Virtual Env
+/venv
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# 2018.06.01-DEA

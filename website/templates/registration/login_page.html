@@ -1,0 +1,77 @@
+{% extends 'website/base.html' %}
+
+{% block navigation %}
+{% endblock navigation %}
+
+
+{% block content %}
+
+<!-- being-recaptcha -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+	function onSubmit(token) {
+		document.getElementById("recaptcha-form").submit();
+	}
+</script>
+<style>
+	.grecaptcha-badge {
+		display: none;
+	}
+
+	input, button, .btn {
+			border: 1px solid black;
+	}
+
+	#create-account {
+		font-size: 100%;
+	}
+
+	#create-account:hover {
+		cursor: pointer;
+		animation: grow 0.25s forwards;
+	}
+
+	@keyframes grow {
+	    0% {
+	        font-size: 100%;
+	    }
+	    100% {
+					font-size: 125%;
+	    }
+	}
+
+	.col-10 {
+		background-color:#f6f6f6;
+		border: 2px solid #aaa;
+		border-radius: 10px;
+		-webkit-box-shadow: 0px 2px 8px 1px rgba(117,117,117,1);
+		-moz-box-shadow: 0px 2px 8px 1px rgba(117,117,117,1);
+		box-shadow: 0px 2px 8px 1px rgba(117,117,117,1);
+		text-align: left;
+	}
+</style>
+<!-- end-recaptcha -->
+	<br /><br />
+	<h3 class="secondary-color center">Please login to continue</h3>
+	<br />
+	{% if form.errors %}
+	<p>Your username and password didn't match. Please try again.</p>
+	{% endif %}
+	<div class="row">
+		<div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+			{% include 'website/server_messages.html' %}
+			<form id="recaptcha-form" method="post">
+				{% csrf_token %}
+				<strong>Username</strong>
+				{{ form.username }}
+				<br /><br />
+				<strong>Password</strong>
+				{{ form.password }}
+				<input type="hidden" name="next" value="{{ next }}" />
+				<br /><br />
+				<button class="g-recaptcha btn btn-success col-md-6 offset-md-3 " data-sitekey="{{ recaptcha_site_key }}" data-callback='onSubmit'>Login</button>
+				<br /><br />
+			</form>
+		</div>
+	</div>
+{% endblock content %}
