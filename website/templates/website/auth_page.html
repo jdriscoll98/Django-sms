@@ -22,7 +22,7 @@ h2 > i:first-child {
 <div class="container">
   <div class="row">
     <div class="col-md-8 offset-md-2">
-      <h2>Please Enter your phone number</h2>
+      <h2>Enter the code you have received</h2>
       <form method="POST"> {% csrf_token %}
         {% for field in form %}
         {{ field.label }}<br />
