@@ -41,6 +41,8 @@ class SMS(TwillioViewMixin, View):
         return HttpResponse(twiml, content_type='text/xml')
 
     def post(self, *args, **kwargs):
+        name = self.request.POST.get('Body', '')
+        msg = 'Hey %s, how are you today?' % (name)
         r = MessagingResponse()
-        r.message('Hello from your django app!')
+        r.message(msg)
         return r
