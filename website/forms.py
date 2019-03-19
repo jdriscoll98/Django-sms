@@ -3,11 +3,13 @@ from phonenumber_field.formfields import PhoneNumberField
 
 
 class PhoneNumberForm(forms.Form):
-    number = forms.IntegerField()
+     number = forms.RegexField(regex=r'^\+?1?\d{9,15}$',
+                                error_messages = {'required': "Phone number must be entered in the format: +999999999. Up to 15 digits allowed."})
 
 
 class AuthCodeForm(forms.Form):
-    code = forms.IntegerField()
+    code = forms.RegexField(regex=r'^\d{5}$')
+
 
 class PaymentForm(forms.Form):
-    amount = forms.IntegerField()
+    amount = forms.IntegerField(min_value=0)
