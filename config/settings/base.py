@@ -44,7 +44,11 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 	'core',
 	'website',
+	'django_twilio',
 ]
+
+TWILIO_ACCOUNT_SID = 'AC0a6d0cca0a5215a423a2d38be400481e'
+TWILIO_AUTH_TOKEN = '670ce77489383ed9d7d13468025a562a'
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
