@@ -9,7 +9,9 @@ phonenumbers==8.10.7
 PyJWT==1.7.1
 PySocks==1.6.8
 pytz==2018.9
-requests==2.18.4
+requests>=2.18.4
 six==1.12.0
 twilio==6.25.2
 urllib3==1.22
+plaid-python >= 3.0
+stripe == 2.23.0

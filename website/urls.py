@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from . import views
-from .views import SMS, AuthPage, PaymentView, ThankYouPage
+from .views import SMS, AuthPage, PaymentView, ThankYouPage, PlaidAuth
 
 # Application Routes (URLs)
 
@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^auth/$', AuthPage.as_view(), name='auth_page'),
     url(r'^payment/$', PaymentView.as_view(), name='payment'),
     url(r'^thanks/$', ThankYouPage.as_view(), name='thanks'),
+    url(r'^plaid_auth/$', PlaidAuth.as_view(), name='plaid_auth'),
 ]

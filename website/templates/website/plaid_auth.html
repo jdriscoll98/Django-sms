@@ -1,0 +1,54 @@
+{% extends 'website/base.html' %}
+
+{% block custom_css %}
+<style type="text/css">
+thead {
+  background-color: var(--secondary-color);
+}
+
+.sub-heading {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+}
+
+h2 > i:first-child {
+  margin-left: 25px;
+}
+</style>
+{% endblock custom_css %}
+
+{% block content %}
+
+<button id="link-button">Link Account</button>
+{% endblock content %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script type="text/javascript">
+  $('#link-button').on('click', function() {
+    var handler = Plaid.create({
+      clientName: 'Plaid Quickstart',
+      env: 'sandbox',
+      key: '5e2497309fd1d58dba74150eba6e78',
+      product: ['transactions'],
+      onSuccess: function(public_token, metadata) {
+        // Send the public_token to your app server.
+        // The metadata object contains info about the institution the
+        // user selected and the account ID or IDs, if the
+        // Select Account view is enabled.
+        $.post('/plaid_auth/', {
+          public_token: public_token,
+          csrfmiddlewaretoken : '{{ csrf_token }}'
+        }, function(data){
+          if (data.success) {
+            window.location.href = data.url;
+          }
+        });
+      },
+    });
+    handler.open();
+  });
+</script>
+{% endblock js %}
