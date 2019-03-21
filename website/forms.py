@@ -1,5 +1,6 @@
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
+from .models import Customer
 
 
 class PhoneNumberForm(forms.Form):
@@ -8,7 +9,6 @@ class PhoneNumberForm(forms.Form):
                                               "Phone number must be entered" +
                                               'in the format:' +
                                               ' 999999999.'})
-
 
 class AuthCodeForm(forms.Form):
     code = forms.RegexField(regex=r'^\d{5}$')
