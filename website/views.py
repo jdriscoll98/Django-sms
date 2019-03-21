@@ -39,7 +39,7 @@ def homepage_view(request):
 
 
 class SMS(TwillioViewMixin, FormView):
-    template_name = 'website/homepage.html'
+    template_name = 'website/phone_form.html'
     form_class = PhoneNumberForm
 
     def form_valid(self, form):

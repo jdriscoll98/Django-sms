@@ -20,10 +20,16 @@ h2 > i:first-child {
 
 {% block content %}
 <div class="container">
-  <br/>
   <div class="row">
-    <div class="col-md-6 text-center">
-        <a href="{% url 'website:sms' 'tech-and-mech' %}" class="btn btn-success">Make a Payment</a>
+    <div class="col-md-8 offset-md-2">
+      <h2>Please Enter your phone number</h2>
+      <form method="POST"> {% csrf_token %}
+        {% for field in form %}
+        {{ field.label }}<br />
+        {{ field }}<br /><br />
+        {% endfor %}
+        <button class="btn btn-success col-4 offset-4">Submit</button>
+      </form>
     </div>
   </div>
 </div>
