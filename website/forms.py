@@ -4,7 +4,7 @@ from .models import Customer
 
 
 class PhoneNumberForm(forms.Form):
-    number = forms.RegexField(regex=r'^\+?1?\d{10}$',
+    phone_number = forms.RegexField(regex=r'^\+?1?\d{10}$',
                               error_messages={'required':
                                               "Phone number must be entered" +
                                               'in the format:' +

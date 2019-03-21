@@ -32,9 +32,10 @@ class TwillioViewMixin(object):
         return super(TwillioViewMixin, self).dispatch(*args, **kwargs)
 
 
-@login_required
 def homepage_view(request):
-    context = {}
+    context = {
+        'company': Company.objects.get(owner=request.user)
+    }
     return render(request, "website/homepage.html", context)
 
 
@@ -43,16 +44,15 @@ class SMS(TwillioViewMixin, FormView):
     form_class = PhoneNumberForm
 
     def form_valid(self, form):
-        self.request.session['company'] = Company.objects.get(owner=self.request.user).pk
-        number = self.request.POST.get('number')
-        code = random.randint(11111, 99999)
+        phone_number = self.request.POST.get('phone_number')
+        code = random.randint(10000, 99999)
         client = TwilioClient(settings.TWILIO_ACCOUNT_SID,
                               settings.TWILIO_AUTH_TOKEN)
         response = client.messages.create(
                  body='Your secure access code is %s' % (str(code)),
-                 to=number, from_=settings.TWILIO_PHONE_NUMBER)
+                 to=phone_number, from_=settings.TWILIO_PHONE_NUMBER)
         self.request.session['code'] = code
-        self.request.session['number'] = number
+        self.request.session['phone_number'] = phone_number
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self, **kwargs):
@@ -62,19 +62,20 @@ class SMS(TwillioViewMixin, FormView):
 class AuthPage(FormView):
     template_name = 'website/auth_page.html'
     form_class = AuthCodeForm
-    success_url = reverse_lazy('website:payment')
 
     def form_valid(self, form):
         auth_code = self.request.POST.get('code')
         if int(auth_code) == int(self.request.session['code']):
             customer = Customer.objects.filter(phone_number=self.request.session['number']).first()
             if customer:
-                self.request.session['customer_id'] = customer.stripe_id
                 return HttpResponseRedirect(self.get_success_url())
             else:
                 return HttpResponseRedirect(reverse_lazy('website:plaid_auth', kwargs={'slug': self.kwargs.get('slug')}))
         else:
             return HttpResponseRedirect(reverse_lazy('website:auth_page'))
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('website:payment', kwargs={'slug': self.kwargs.get('slug')})
 
 class PlaidAuth(View):
     def get(self, *args, **kwargs):
@@ -102,12 +103,12 @@ class PlaidAuth(View):
                                                                 )
         token = stripe_response['stripe_bank_account_token']
         company = Company.objects.get(slug=self.kwargs.get('slug'))
-        phone_number = self.request.session['number']
+        phone_number = self.request.session['phone_number']
         id = company.create_stripe_customer(token, phone_number)
         self.request.session['customer_id'] = id
         data = {
             'success': True,
-            'url': reverse_lazy('website:payment')
+            'url': reverse_lazy('website:payment', kwargs={'slug': company.slug})
         }
         return JsonResponse(data)
 
@@ -118,9 +119,10 @@ class PaymentView(FormView):
     success_url = reverse_lazy('website:thanks')
 
     def form_valid(self, form):
-        customer_id = self.request.session['customer_id']
-        company = Company.objects.get(pk=self.request.session['company'])
+        phone_number = self.request.session['number']
         amount = int(self.request.POST.get('amount')) * 100
+        customer_id = Customer.objects.get(phone_number=phone_number).stripe_id
+        company = Company.objects.get(slug=self.kwargs.get('slug'))
         company.charge_customer(customer_id, amount)
         return HttpResponseRedirect(reverse_lazy('website:thanks'))
 

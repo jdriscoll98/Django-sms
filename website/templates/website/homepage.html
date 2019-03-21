@@ -23,7 +23,7 @@ h2 > i:first-child {
   <br/>
   <div class="row">
     <div class="col-md-6 text-center">
-        <a href="{% url 'website:sms' 'tech-and-mech' %}" class="btn btn-success">Make a Payment</a>
+        <a href="{% url 'website:sms' company.slug %}" class="btn btn-success">Make a Payment to {{ company }}</a>
     </div>
   </div>
 </div>
