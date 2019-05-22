@@ -44,7 +44,18 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 	'core',
 	'website',
+	'django_twilio',
 ]
+
+TWILIO_ACCOUNT_SID = 'AC0a6d0cca0a5215a423a2d38be400481e'
+TWILIO_AUTH_TOKEN = '670ce77489383ed9d7d13468025a562a'
+TWILIO_PHONE_NUMBER = '+19543712985'
+
+PLAID_CLIENT_ID='5c8a80db9a4dbe0012517ce7'
+PLAID_SECRET='7e584ab17c614700acbc8eb02b0651'
+PLAID_PUBLIC_KEY='5e2497309fd1d58dba74150eba6e78'
+PLAID_PRODUCTS='transactions'
+PLAID_ENV='sandbox'
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
